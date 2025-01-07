@@ -1,0 +1,6 @@
+node_modules/
+venv/
+backend/models/
+*.env
+all-images/
+all_images_zip.zip
