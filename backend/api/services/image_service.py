@@ -22,6 +22,7 @@ def delete_image_from_cloudinary(public_id):
     """
     try:
         response = cloudinary.uploader.destroy(public_id)
+        print(f'Response: {response}')
         return response 
     except Exception as e:
         raise Exception(f"Failed to delete image from Cloudinary: {e}")

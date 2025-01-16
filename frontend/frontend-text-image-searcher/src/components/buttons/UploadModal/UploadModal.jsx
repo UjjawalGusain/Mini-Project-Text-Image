@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import ENDPOINTS from '../../../services/api';
 
 function UploadModal({ isOpen, onClose, userId }) {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -25,7 +26,7 @@ function UploadModal({ isOpen, onClose, userId }) {
         setError('');
   
         const response = await axios.post(
-          'http://127.0.0.1:8000/images/upload-image',
+          ENDPOINTS.IMAGE.UPLOAD_IMAGE,
           formData,
           {
             headers: {

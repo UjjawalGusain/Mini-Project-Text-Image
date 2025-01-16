@@ -3,6 +3,7 @@ const ENDPOINT_PREFIX = 'http://127.0.0.1:8000/';
 const ENDPOINTS = {
     IMAGE: {
         UPLOAD_IMAGE: ENDPOINT_PREFIX + "images/upload-image",
+        DELETE_IMAGE: ENDPOINT_PREFIX + "images/delete-image/",
         GET_IMAGES: ENDPOINT_PREFIX + "images/get-images/",
         GET_IMAGES_BY_ID: ENDPOINT_PREFIX + "images/get-images-by-ids",
         

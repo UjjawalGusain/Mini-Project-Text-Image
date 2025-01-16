@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "dev": "concurrently --kill-others \"npm run frontend\" \"npm run backend\"",
+    "frontend": "cd frontend/frontend-text-image-searcher && npm run dev",
+    "backend": "uvicorn backend.app:app --reload"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

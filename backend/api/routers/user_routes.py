@@ -5,14 +5,11 @@ from pydantic import BaseModel
 import uuid
 import bcrypt
 import jwt
-from dotenv import load_dotenv
-import os
 from datetime import datetime, timedelta, timezone
-
+from ...config import SECRET_KEY
 router = APIRouter()
 
-load_dotenv()
-SECRET_KEY = os.getenv("SECRET_KEY") 
+
 ALGORITHM = "HS256"
 
 class UserCreate(BaseModel):

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "./Image/Image";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import ENDPOINTS from "../../services/api";
 
 function ImageContainer() {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]); // Array of { id, url }
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState("");
 
@@ -15,9 +15,9 @@ function ImageContainer() {
       if (token) {
         try {
           const decodedToken = jwtDecode(token);
-          const usernameFromToken = decodedToken.username;  
-          setUsername(usernameFromToken);  
-          
+          const usernameFromToken = decodedToken.username;
+          setUsername(usernameFromToken);
+
           const response = await axios.get(
             `${ENDPOINTS.USER.GET_USER_ID}${usernameFromToken}`,
             {
@@ -44,7 +44,13 @@ function ImageContainer() {
           const response = await axios.get(
             `${ENDPOINTS.IMAGE.GET_IMAGES}${userId}`
           );
-          const fetchedImages = response.data.images.map((image) => image.url); // Extract image URLs
+          
+          const fetchedImages = response.data.images.map((image) => ({
+            id: image.id, // Include image ID
+            url: image.url, // Include image URL
+          }));
+        
+          
           setImages(fetchedImages);
         } catch (error) {
           console.error("Error fetching images:", error);
@@ -55,13 +61,16 @@ function ImageContainer() {
     if (userId) {
       fetchImages();
     }
-  }, [userId]);  
+  }, [userId]);
 
   return (
     <div className="max-w-6xl mx-auto p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {images.map((src, index) => (
-          <Image key={index} src={src} alt={`Image ${index + 1}`} />
+        {images.map(({ id, url }, index) => (
+          <div key={index} className="text-center">
+            <Image src={url} alt={`Image ${index + 1}`} />
+            <p className="mt-2 text-sm text-gray-600">ID: {id}</p>
+          </div>
         ))}
       </div>
     </div>

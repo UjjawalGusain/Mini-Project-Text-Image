@@ -8,7 +8,7 @@ import httpx
 import base64
 from typing import List
 from sqlalchemy import case
-
+from backend.api.routers.db_routes import remove_image_embedding, RemoveEmbeddingInput
 
 router = APIRouter()
 
@@ -55,11 +55,6 @@ async def upload_image(
         db.refresh(new_image)
 
 
-        print(type(userid))
-        print(type(cloudinary_response["public_id"]))
-        print(type(embedding))
-        print("Hello")
-
         async with httpx.AsyncClient() as client:
             embedding_payload = {
                 "user_id": userid,
@@ -90,7 +85,7 @@ async def upload_image(
 
 
 @router.delete("/delete-image/{image_id}")
-async def delete_image(image_id: int, db: Session = Depends(get_db)):
+async def delete_image(image_id: str, db: Session = Depends(get_db)):
     try:
         # Retrieve the image record from PostgreSQL
         image_record = db.query(Image).filter(Image.id == image_id).first()
@@ -103,16 +98,19 @@ async def delete_image(image_id: int, db: Session = Depends(get_db)):
         delete_response = delete_image_from_cloudinary(public_id)
         if delete_response.get("result") != "ok":
             raise HTTPException(status_code=500, detail="Failed to delete image from Cloudinary")
-
+       
         async with httpx.AsyncClient() as client:
-            removal_payload = {
-                "user_id": user_id,
-                "embedding_ids": [public_id]
-            }
-            response = await client.delete(
-                "http://localhost:8000/db/remove-image-embedding", json=removal_payload
+            removal_payload = RemoveEmbeddingInput(
+                user_id=user_id,
+                embedding_ids=[public_id],
             )
-            if response.status_code != 200:
+            try:
+                # print(f"Removal payload: {removal_payload}")
+                response = await remove_image_embedding(removal_payload)
+                # print(f"This part also done: {response}")
+                # print(f'Response: {response}')
+            except HTTPException as e:
+                print(f"Error occurred: {e.detail}")
                 raise HTTPException(
                     status_code=500, detail="Failed to remove embedding from ChromaDB"
                 )
@@ -160,8 +158,8 @@ async def get_images_by_ids(request: GetImagesRequest, db: Session = Depends(get
     image_ids = request.image_ids
     user_id = request.user_id
 
-    print(image_ids)
-    print(user_id)
+    # print(image_ids)
+    # print(user_id)
     
     try:
         image_order = case(
@@ -183,7 +181,7 @@ async def get_images_by_ids(request: GetImagesRequest, db: Session = Depends(get
             }
             for image in images
         ]
-        print(f"Image list: {image_list}")
+        # print(f"Image list: {image_list}")
 
         return {"message": "Images retrieved successfully", "images": image_list}
 

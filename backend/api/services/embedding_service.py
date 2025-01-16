@@ -4,10 +4,9 @@ from PIL import Image
 import torch
 from transformers import AutoTokenizer, ViTImageProcessor
 import torch.nn.functional as F
-import os
+from ...config import MODEL_PATH
 
 
-MODEL_PATH = 'D:/newVsCode/Mini-Project-Text-Image/backend/models/siamese_traced_model.pt'
 traced_model = torch.jit.load(MODEL_PATH)
 
 class EmbeddingService:
@@ -28,7 +27,7 @@ class EmbeddingService:
         except Exception as e:
             raise ValueError(f"Invalid image format: {e}")
 
-    def preprocess_text(self, text: str, max_length=128):
+    def preprocess_text(self, text: str, max_length=128): 
         """Preprocess a text string for embedding generation."""
         inputs = self.tokenizer.encode_plus(
             text,

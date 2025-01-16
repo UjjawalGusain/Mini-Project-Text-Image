@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from backend.database.connect import chroma_client
+from typing import List
 
 router = APIRouter()
 
@@ -20,7 +21,9 @@ class QueryInput(BaseModel):
 
 class RemoveEmbeddingInput(BaseModel):
     user_id: str 
-    embedding_ids: list 
+    embedding_ids: List[str]
+
+
 
 @router.post("/add-image-embedding")
 async def add_image_embedding(embedding_input: EmbeddingInput):
@@ -44,8 +47,14 @@ async def query_image_embedding(query_input: QueryInput):
 @router.delete("/remove-image-embedding")
 async def remove_image_embedding(remove_input: RemoveEmbeddingInput):
     try:
+        # print("We did reach here")
         collection = get_user_collection(remove_input.user_id)
+        # print("and here")
         collection.delete(ids=remove_input.embedding_ids)
+        # print("Here?")
         return {"message": "Embedding(s) removed successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error removing embedding: {e}")
+
+
+

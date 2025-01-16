@@ -14,7 +14,7 @@ class ImageInput(BaseModel):
 
 
 @router.post("/image-embedding")
-async def get_image_embedding(image_input: ImageInput):
+async def get_image_embedding(image_input: ImageInput):  
     """API endpoint to get image embeddings."""
     try:
         image_tensor = embedding_service.preprocess_image(image_input.image)
