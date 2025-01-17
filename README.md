@@ -8,7 +8,6 @@ PiXplorer leverages the power of deep learning and vector databases to provide f
 With PiXplorer, explore your images with ease and precision!
 
 ## Table of Contents
-- [PiXplorer: A Text-to-Image Retrieval System](#pixplorer-a-text-to-image-retrieval-system)
   - [Introduction](#introduction)
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
@@ -49,7 +48,24 @@ npm run dev
 ```
 ## Architecture
 
+### Model Architecture
+![model_architecture](https://github.com/user-attachments/assets/0e14e489-f895-4f15-abf9-2f3fbc1ddac9)
+
+### Retrieval System Architecture
+![retrieval_system](https://github.com/user-attachments/assets/87c3cb13-3a89-4d09-8934-2d0bcefffb11)
+
 ## Application Screenshots
+
+### Homepage 
+![ss-1](https://github.com/user-attachments/assets/c3860f4c-7544-4b3a-9fc7-6008990f28bd)
+
+### Example text 
+
+#### Monkey eating banana
+![ss-2](https://github.com/user-attachments/assets/a113d9bf-35c1-462c-8428-b5b547010f9d)
+
+#### Me and cat
+![ss-3(me and cat)](https://github.com/user-attachments/assets/9175245b-8a19-445c-a6d9-ae9effb33837)
 
 ## Demo Video
 - [Click link for the demo](https://www.linkedin.com/posts/ujjawal-gusain_artificialintelligence-machinelearning-activity-7285860897351184384-vUgB)
